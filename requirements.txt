@@ -1,0 +1,10 @@
+<<<<<<< HEAD
+streamlit==1.32.0
+torch==2.2.0
+tokenizers==0.15.0
+plotly==5.18.0
+=======
+altair
+pandas
+streamlit
+>>>>>>> 18026c356c5fa7eacb19bf46558e1411f1a5118a

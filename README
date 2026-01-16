@@ -1,0 +1,22 @@
+@"
+---
+title: Igala GPT from Scratch
+emoji: 🚀
+colorFrom: green
+colorTo: blue
+sdk: streamlit
+sdk_version: 1.32.0
+app_file: app.py
+pinned: false
+---
+
+# Igala GPT from Scratch
+
+First-ever GPT model trained from scratch on Igala language! 🇳🇬
+
+## Model Details
+- Architecture: Transformer (6 layers, 6 heads, 384 dim)
+- Parameters: ~11.3M
+- Training data: ~268 Igala sentences
+- Vocabulary: Custom tokenizer trained on Igala corpus
+"@ | Out-File -FilePath README.md -Encoding utf8
