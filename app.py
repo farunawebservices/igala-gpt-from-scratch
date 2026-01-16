@@ -27,30 +27,38 @@ def load_model():
     # Check if files exist
     if not os.path.exists("outputs/tokenizer/igala_tokenizer.json"):
         raise FileNotFoundError("Tokenizer file not found")
-    if not os.path.exists('outputs/model_checkpoints/igala_gpt_final_v2.pt'):
-        raise FileNotFoundError("Model checkpoint not found")
+    if not os.path.exists('outputs/model_checkpoints/model_state.pth'):
+        raise FileNotFoundError("Model state dict not found")
+    if not os.path.exists('outputs/model_checkpoints/config.json'):
+        raise FileNotFoundError("Config file not found")
     
     # Load tokenizer
     tokenizer = Tokenizer.from_file("outputs/tokenizer/igala_tokenizer.json")
     
-    # Load model with weights_only=False (safe because it's our own trained model)
-    try:
-        checkpoint = torch.load(
-            'outputs/model_checkpoints/igala_gpt_final_v2.pt', 
-            map_location='cpu',
-            weights_only=False
-        )
-    except Exception as e:
-        raise RuntimeError(f"Failed to load checkpoint: {str(e)}")
+    # Load config from JSON
+    with open('outputs/model_checkpoints/config.json', 'r') as f:
+        config_dict = json.load(f)
     
-    config = checkpoint['config']
-    config.vocab_size = tokenizer.get_vocab_size()
+    config = GPTConfig(
+        vocab_size=config_dict['vocab_size'],
+        n_embd=config_dict['n_embd'],
+        n_head=config_dict['n_head'],
+        n_layer=config_dict['n_layer'],
+        block_size=config_dict['block_size'],
+        dropout=config_dict['dropout']
+    )
     
+    # Create model and load state dict
     model = IgalaGPT(config)
-    model.load_state_dict(checkpoint['model_state_dict'])
+    state_dict = torch.load('outputs/model_checkpoints/model_state.pth', 
+                           map_location='cpu',
+                           weights_only=True)
+    model.load_state_dict(state_dict)
     model.eval()
     
-    training_logs = checkpoint['training_logs']
+    # Load training logs
+    with open('outputs/model_checkpoints/training_logs.json', 'r') as f:
+        training_logs = json.load(f)
     
     return model, tokenizer, training_logs, config
 
@@ -283,7 +291,9 @@ else:
     st.info("👆 Please ensure model files are in the correct location")
     st.markdown("""
     **Required files:**
-    - `outputs/model_checkpoints/igala_gpt_final_v2.pt`
+    - `outputs/model_checkpoints/model_state.pth`
+    - `outputs/model_checkpoints/config.json`
+    - `outputs/model_checkpoints/training_logs.json`
     - `outputs/tokenizer/igala_tokenizer.json`
     - `data/igala_corpus.txt`
     """)
