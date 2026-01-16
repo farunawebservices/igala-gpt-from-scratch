@@ -1,20 +1,25 @@
 ---
-title: Igala Gpt From Scratch
+title: Igala GPT from Scratch
 emoji: 🚀
-colorFrom: red
-colorTo: red
-sdk: docker
-app_port: 8501
-tags:
-- streamlit
+colorFrom: green
+colorTo: blue
+sdk: streamlit
+sdk_version: 1.32.0
+app_file: app.py
 pinned: false
-short_description: Streamlit template space
-license: mit
 ---
 
-# Welcome to Streamlit!
+# Igala GPT from Scratch
 
-Edit `/src/streamlit_app.py` to customize this app to your heart's desire. :heart:
+First-ever GPT model trained from scratch on Igala language! 🇳🇬
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+## Model Details
+- Architecture: Transformer (6 layers, 6 heads, 384 dim)
+- Parameters: ~11.3M
+- Training data: ~268 Igala sentences
+- Vocabulary: Custom tokenizer trained on Igala corpus
+
+## Features
+- Text generation in Igala language
+- Interactive Streamlit interface
+- Model trained completely from scratch
